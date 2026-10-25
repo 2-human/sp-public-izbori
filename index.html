@@ -1,0 +1,514 @@
+<title>Изборни дан уживо</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* studenti.org.rs tokens (via lastm brand/design-tokens, light only). */
+:root {
+  color-scheme: light;
+  --brand-primary: #a81a32;
+  --brand-primary-dark: #7b0f2e;
+  --brand-ink: #231f20;
+  --brand-surface: #ffffff;
+  --brand-surface-soft: #f2f2f2;
+  --brand-tint: #e1e8f4;
+  --brand-text: #231f20;
+  --brand-text-soft: #585858;
+  --brand-text-faint: #757575;
+  --brand-rule: rgba(35, 31, 32, .5);
+  --brand-link: #a81a32;
+  --brand-on-primary: #ffffff;
+  --brand-on-ink: #ffffff;
+  --cat-march: hsl(350 72% 38%);
+  --cat-media: hsl(206 72% 38%);
+  --cat-org: hsl(134 72% 38%);
+  --font-sans: 'Golog Text', 'Inter Tight', Arial, sans-serif;
+  --fs-display: clamp(2.25rem, 5vw, 3.5rem);
+  --fs-h2: 1.75rem;
+  --fs-h3: 1.5rem;
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+  --fs-micro: .75rem;
+  --lh-tight: 1;
+  --lh-body: 1.5;
+  --radius-control: .5rem;
+  --radius-card: 10px;
+  --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem;
+  --space-6: 1.5rem; --space-8: 2rem; --space-12: 3rem;
+  --header-bg: hsla(0 0% 100% / .8);
+  --header-blur: 6px;
+}
+html { background: var(--brand-surface); scroll-behavior: smooth; }
+body {
+  margin: 0; color: var(--brand-text); background: var(--brand-surface);
+  font-family: var(--font-sans); font-size: var(--fs-body); line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-weight: 700; line-height: var(--lh-tight); margin: 0 0 var(--space-4); }
+h1 { font-size: var(--fs-display); }
+p { margin: 0 0 var(--space-3); }
+a { color: var(--brand-link); text-decoration: underline; }
+a:hover { color: var(--brand-primary-dark); }
+.faint { color: var(--brand-text-soft); }
+
+/* header (sticky glass) */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--brand-surface); }
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 100; background: var(--header-bg); backdrop-filter: blur(var(--header-blur)); border-bottom: 1px solid var(--brand-surface-soft); }
+.site-header nav { max-width: 70rem; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: var(--space-2); min-height: 3.5rem; }
+.site-header .brand { color: var(--brand-text); text-decoration: none; font-weight: 700; padding: var(--space-3) var(--space-2); }
+.site-header .spacer { flex: 1; }
+.site-header .section { font-weight: 500; padding: var(--space-3) var(--space-2); border-bottom: 4px solid var(--brand-primary); }
+.lang button { font: inherit; font-size: var(--fs-small); font-weight: 700; background: none; border: 0; border-bottom: 4px solid transparent; padding: var(--space-3) var(--space-2); color: var(--brand-text); cursor: pointer; }
+.lang button:hover { background: hsla(from var(--brand-tint) h s l / .9); }
+.lang button:focus-visible, .filters .chip:focus-visible { outline: 3px solid var(--brand-ink); outline-offset: 2px; }
+.lang button.on { border-bottom-color: var(--brand-primary); }
+
+main.content { padding-block: var(--space-8) var(--space-12); padding-left: max(var(--space-8), env(safe-area-inset-left, 0px)); padding-right: max(var(--space-8), env(safe-area-inset-right, 0px)); width: 100%; max-width: 760px; margin-inline: auto; box-sizing: border-box; }
+.eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: var(--fs-small); font-weight: 700; color: var(--brand-primary); margin: 0 0 var(--space-1); }
+.head h1 { font-size: clamp(2rem, 3.6vw, 3rem); margin-bottom: var(--space-2); }
+.lede { font-size: 1.125rem; }
+
+/* filters (the feed's city chips) */
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-6) 0; padding: var(--space-4); background: var(--brand-surface-soft); border-radius: var(--radius-card); }
+.chip { display: inline-flex; align-items: center; gap: .4em; font-size: var(--fs-micro); font-weight: 700; letter-spacing: .02em;
+  padding: .2em .6em; border-radius: var(--radius-control); background: var(--brand-surface-soft); color: var(--brand-text-soft); }
+.chip::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: var(--dot, var(--brand-text-faint)); }
+.chip.r { --dot: var(--cat-march); } .chip.ok { --dot: var(--cat-org); } .chip.msg { --dot: var(--cat-media); }
+.filters .chip { cursor: pointer; border: 1px solid var(--brand-rule); background: var(--brand-surface); padding: .45em .8em; font: inherit; font-size: var(--fs-small); font-weight: 700; color: var(--brand-text-soft); }
+.filters .chip::before { display: none; }
+.filters .chip.on { border-color: var(--brand-primary); background: var(--brand-primary); color: var(--brand-on-primary); }
+
+/* feed = timeline */
+.timeline { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-8); }
+.timeline > li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-3); border-left: 3px solid var(--brand-primary); padding-left: var(--space-3); }
+.timeline > li.ok { border-left-color: var(--cat-org); }
+.timeline > li.msg { border-left-color: var(--brand-ink); }
+.timeline time { font-weight: 700; font-variant-numeric: tabular-nums; font-size: var(--fs-small); line-height: 1.6; }
+.timeline h3 { margin: var(--space-2) 0 var(--space-3); font-size: 1.25rem; }
+.item.msg h3 { font-size: var(--fs-h3); }
+.place + .place { margin-top: var(--space-3); }
+.place h4 { font-size: var(--fs-body); margin: 0 0 var(--space-1); }
+.place ul { margin: 0; padding-left: 1.2rem; }
+.place li { margin: 0 0 var(--space-1); }
+.note { font-size: var(--fs-small); color: var(--brand-text-soft); }
+.big { font-size: var(--fs-display); font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; margin: var(--space-2) 0 var(--space-3); }
+blockquote { margin: var(--space-4) 0 0; padding: var(--space-4); background: var(--brand-tint); border-radius: var(--radius-card); }
+blockquote p:last-child { margin: 0; }
+.empty { color: var(--brand-text-faint); padding: var(--space-12); text-align: center; }
+
+.site-footer { background: var(--brand-ink); color: var(--brand-on-ink); padding-block: var(--space-8); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); text-align: center; font-size: var(--fs-small); }
+
+@media (max-width: 820px) {
+  main.content { padding-block: var(--space-6); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .timeline > li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+@media (max-width: 520px) {
+  .head h1 { font-size: clamp(1.75rem, 8vw, 2.25rem); line-height: 1.1; }
+  .item.msg h3 { font-size: 1.25rem; }
+  .big { font-size: 2.5rem; }
+}
+</style>
+<header class="site-header"><nav>
+  <a class="brand" href="https://studenti.org.rs" target="_blank" rel="noopener">Studenti.org</a>
+  <span class="section" data-t="section"></span>
+  <span class="spacer"></span>
+  <span class="lang">
+    <button data-lang="sr">СРП</button>
+    <button data-lang="en">ENG</button>
+  </span>
+</nav></header>
+
+<main class="content">
+  <div class="head">
+    <p class="eyebrow" id="date"></p>
+    <h1 data-t="title"></h1>
+    <p class="lede faint" data-t="tagline"></p>
+  </div>
+  <div class="filters" id="flt"></div>
+  <ol class="timeline" id="feed"></ol>
+</main>
+
+<footer class="site-footer" data-t="footer"></footer>
+
+<script>
+const UI = {
+  sr: {
+    section: `Избори`, title: `Изборни дан уживо`, date: `25. октобар 2026.`,
+    tagline: `Излазност, саопштења и неправилности са терена, из сата у сат. Најновије прво.`,
+    all: `Све`, msgs: `Саопштења`, irr: `Неправилности`,
+    r: `Пријављено`, ok: `Решено`, msg: `Саопштење`, none: `Нема објава за овај филтер.`,
+    footer: `Подаци долазе са терена: од контролора, мобилних тимова и правника. Пријаве су наведене онако како су достављене.`,
+  },
+  en: {
+    section: `Elections`, title: `Election day live`, date: `25 October 2026`,
+    tagline: `Turnout, statements and irregularities from the field, hour by hour. Latest first.`,
+    all: `All`, msgs: `Statements`, irr: `Irregularities`,
+    r: `Reported`, ok: `Resolved`, msg: `Statement`, none: `Nothing matches this filter.`,
+    footer: `Reports come from the field: our election monitors, mobile teams and legal advisers. They are listed as submitted.`,
+  },
+};
+
+const REG = {
+  bg:    {sr: `Београд`,    en: `Belgrade`},
+  sever: {sr: `Север`,      en: `North`},
+  zapad: {sr: `Запад`,      en: `West`},
+  kg:    {sr: `Крагујевац`, en: `Kragujevac`},
+  istok: {sr: `Исток`,      en: `East`},
+  jug:   {sr: `Југ`,        en: `South`},
+};
+
+
+// Feed, latest first. k: msg = statement, irr = irregularities (st: r reported, ok resolved; t: hour window).
+const FEED = [
+  {k:`irr`, reg:`jug`, st:`r`, t:[19,20],
+   sr:[[`Сврљиг, Чаир, БМ 42 и 43`, [`У близини бирачких места примећена су два комбија. Према информацијама са терена, постоји сумња да се у њима налазе особе наоружане палицама. Полиција је обавештена.`]]],
+   en:[[`Svrljig, Čair, polling stations 42 and 43`, [`Two vans were spotted near the polling stations. According to reports from the field, the people inside are suspected of being armed with clubs. The police have been informed.`]]]},
+  {k:`irr`, reg:`zapad`, st:`r`, t:[19,20],
+   sr:[[`Ужице`, [`Пријављено је бушење гума на возилима широм града.`]],
+       [`Љубовија`, [`Пријављени су легитимисање и претресање чланова мобилних тимова.`]],
+       [`Шабац`, [`Према информацијама са терена, начелник полиције упућивао је претње грађанима. Пријављено је и постојање паралелних бирачких спискова.`]]],
+   en:[[`Užice`, [`Tyres were reported to have been slashed on vehicles across the town.`]],
+       [`Ljubovija`, [`Members of the mobile teams were reportedly subjected to identity checks and searches.`]],
+       [`Šabac`, [`According to reports from the field, the police chief threatened citizens. Parallel electoral registers were also reported.`]]]},
+  {k:`irr`, reg:`kg`, st:`r`, t:[19,20],
+   sr:[[`Чачак, БМ 11, ОШ „Др Драгиша Мишовић“`, [`Спречен је покушај поновног гласања истог бирача.`]],
+       [`Крагујевац, Аеродром, ОШ „Мирко Јовановић“`, [`Пријављено је постојање паралелног бирачког списка. Према информацијама са терена, полиција је привела особе код којих је пронађен паралелни бирачки списак.`]]],
+   en:[[`Čačak, polling station 11, Dr Dragiša Mišović Primary School`, [`An attempt at multiple voting was prevented.`]],
+       [`Kragujevac, Airport, Mirko Jovanović Primary School`, [`A parallel electoral register was reported. According to reports from the field, the police took in for questioning the people found holding it.`]]]},
+  {k:`msg`, at:`20:00`,
+   sr:{h:`Бирачка места се затварају`, p:[`20 је часова. Бирачка места се затварају.`, `Подсећамо све грађане који су заузели место у редовима пре 20.00 часова да имају још увек право да искажу своју бирачку вољу.`]},
+   en:{h:`Polling stations are closing`, p:[`It is 8:00 PM. Polling stations are closing.`, `We remind all citizens who were already in line before 8:00 PM that they still have the right to cast their vote.`]}},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[18,19],
+   sr:{lead:`У овом периоду нема решених неправилности.`}, en:{lead:`No irregularities were resolved in this period.`}},
+  {k:`msg`,
+   sr:{h:`Србија није само Београд`, lead:`Затварањем бирачких места изборни процес није завршен.`,
+       p:[`Затварањем бирачких места изборни процес није завршен. Следе бројање гласова, записници и предаја изборног материјала локалним изборним комисијама.`,
+          `После оваквог дана и овакве излазности, не смемо да дозволимо да нам било ко у последњим сатима угрози оно за шта смо се толико борили!`,
+          `Зато останите у својим местима. Будите уз наше контролоре, пратите шта се дешава и помозите да се сваки глас сачува мирно и достојанствено.`,
+          `Вечерас нам цела Србија треба тамо где је данас гласала.`,
+          `**Србија није у Београду. Србија је у Србији!**`]},
+   en:{h:`Serbia is not just Belgrade`, lead:`The electoral process does not end when the polling stations close.`,
+       p:[`The electoral process does not end when the polling stations close. Next come the counting of votes, the results protocols and the handover of election material to the local electoral commissions.`,
+          `After a day like this and a turnout like this, we must not let anyone, in the final hours, put at risk what we have fought so hard for!`,
+          `So stay in your towns. Stand by our election monitors, keep watch on what is happening, and help make sure every vote is protected, calmly and with dignity.`,
+          `Tonight we need all of Serbia to be where it voted today.`,
+          `**Serbia is not in Belgrade. Serbia is in Serbia!**`]}},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[18,19],
+   sr:[[`Пећинци`, [`Покушај гласања ван бирачког места у име друге особе. Гласачки листић је постао неважећи.`]]],
+   en:[[`Pećinci`, [`An attempt was made to vote outside the polling station (mobile voting) on behalf of another person (proxy voting). The ballot paper was declared invalid.`]]]},
+  {k:`irr`, reg:`bg`, st:`r`,
+   sr:[[`Гроцка`, [`Гласање је заустављено због фотографисања гласачког листића.`]],
+       [`Младеновац`, [`**Бирачко место 13:** Гласање је заустављено због проналаска два гласачка листића у једној коверти коју је донела комисија за гласање ван бирачког места. Локална изборна комисија кренула је ка бирачком месту.`]],
+       [`Лазаревац`, [`**Бирачка места 20 и 65:** Пронађени су паралелни бирачки спискови.`]]],
+   en:[[`Grocka`, [`Voting was stopped because of the photographing of a ballot paper.`]],
+       [`Mladenovac`, [`**Polling station 13:** Voting was stopped after two ballot papers were found in a single envelope brought back by the mobile voting team. The local electoral commission set off for the polling station.`]],
+       [`Lazarevac`, [`**Polling stations 20 and 65:** Parallel electoral registers were found.`]]]},
+  {k:`irr`, reg:`kg`, st:`ok`, t:[18,19],
+   sr:[[`Љиг`, [`**Бирачко место 29:** Спречено је фотографисање гласачког листића.`]],
+       [`Крушевац`, [`**Бирачко место 37:** Одузет је паралелни бирачки списак.`]]],
+   en:[[`Ljig`, [`**Polling station 29:** An attempt to photograph a ballot paper was prevented.`]],
+       [`Kruševac`, [`**Polling station 37:** A parallel electoral register was confiscated.`]]]},
+  {k:`msg`,
+   sr:{h:`Добро вече, Србијо!`,
+       p:[`Србијо, остало је мање од два сата до затварања бирачких места. Сунце је већ зашло, али изборни дан још траје!`,
+          `Пре него што саопштимо податке о излазности, подсећамо вас на важно правило: **ако се у 20 часова затекнете у реду на бирачком месту, имате право да гласате!**`,
+          `Према нашем репрезентативном узорку, до овог тренутка гласало је **64,2% бирача**. Овај проценат већ надмашује излазност у претходна два изборна процеса.`,
+          `Према подацима РИК-а, на претходним изборима до 18 часова излазност је износила 51,93%. **Већ је премашена и укупна излазност на парламентарним изборима 2023. године!**`,
+          `До 18 часова гласало је **4.400.000 људи!**`,
+          `Излазност и даље расте! Изађите и ви, и допринесите да он буде још снажнији. Пред нама су још готово два сата до затварања бирачких места.`,
+          `Сваки глас је важан. Ваш глас је важан. Не стајемо до самог краја изборног дана. На корак смо од тога да испишемо историју и остваримо највећу излазност у историји Србије!`,
+          `Наши тимови и даље су на терену. Наши контролори остају на бирачким местима, а људи и даље чекају у редовима.`,
+          `Молимо грађане да остану прибрани и позивамо све учеснике изборног процеса да омогуће да се он мирно приведе крају.`,
+          `**Србија није само Београд.** Останите у редовима и сачекајте свој ред. Наши контролори у овим тренуцима имају огромну одговорност. Пружите им подршку и будите им ветар у леђа.`,
+          `**Сваком грађанину мора бити омогућено да оствари своје право гласа. До краја!**`],
+       quote:{by:`Ана Димитријевић`, p:[`**Излазност је већа него у последња два изборна циклуса!**`, `Хајде да заједно наставимо до краја!`, `**Искористите своје право: бирајте своју будућност!**`]}},
+   en:{h:`Good evening, Serbia!`,
+       p:[`Serbia, there are less than two hours left until the polling stations close. The sun has already set, but election day is not over yet!`,
+          `Before we share the turnout figures, a reminder of an important rule: **if you are in the queue at a polling station at 20:00, you have the right to vote!**`,
+          `According to our representative sample, **64.2% of voters** have voted so far. This already exceeds the turnout in the previous two elections.`,
+          `According to Republic Electoral Commission (RIK) data, turnout in the previous elections by 18:00 was 51.93%. **The total turnout in the 2023 parliamentary elections has already been exceeded!**`,
+          `By 18:00, **4,400,000 people had voted!**`,
+          `Turnout is still rising! Go out and vote too, and help make it even stronger. There are still almost two hours until the polling stations close.`,
+          `Every vote matters. Your vote matters. We are not stopping until the very end of election day. We are one step away from making history and achieving the highest turnout in Serbia's history!`,
+          `Our teams are still in the field. Our election monitors are staying at the polling stations, and people are still waiting in the queues.`,
+          `We ask citizens to stay calm, and we call on everyone taking part in the electoral process to let it come to a peaceful end.`,
+          `**Serbia is not just Belgrade.** Stay in the queues and wait your turn. Our election monitors carry an enormous responsibility right now. Support them and be the wind in their sails.`,
+          `**Every citizen must be able to exercise their right to vote. Until the very end!**`],
+       quote:{by:`Ana Dimitrijević`, p:[`**Turnout is higher than in the last two election cycles!**`, `Let's keep going together until the end!`, `**Use your right: choose your future!**`]}}},
+  {k:`irr`, reg:`bg`, st:`r`, t:[17,18],
+   sr:[[`Младеновац`, [`**Бирачко место 31:** Пријављено је убацивање гласова без потврде. Контролор Студентске листе–Студенти побеђују поклопио је гласачку кутију и зауставио гласање, након чега је физички нападнут. Локална изборна комисија упутила се на бирачко место.`]],
+       [`Вождовац`, [`**Бирачко место 33:** Одузети су дупли бирачки спискови.`]]],
+   en:[[`Mladenovac`, [`**Polling station 31:** Ballots were reportedly being put into the ballot box without verification, i.e. ballot box stuffing. An election monitor from the Student List – Students Win covered the ballot box and stopped the voting, after which they were physically attacked. The local electoral commission set off for the polling station.`]],
+       [`Voždovac`, [`**Polling station 33:** Duplicate electoral registers were confiscated.`]]]},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[17,18],
+   sr:[[`Петровац на Млави`, [`**Стан у центру града:** Мобилни тимови су, по дојави, открили позивни центар у стану у центру Петровца на Млави. Уз присуство нашег правника, полиција је привела три особе које су, према пријави, запослене у установи у Стамници, којој стан припада.`]]],
+   en:[[`Petrovac na Mlavi`, [`**Flat in the town centre:** Acting on a tip-off, mobile teams discovered a call centre in a flat in the centre of Petrovac na Mlavi. With our legal adviser present, the police took in for questioning three people who, according to the report, are employed by an institution in Stamnica that owns the flat.`]]]},
+  {k:`irr`, reg:`kg`, st:`r`, t:[17,18],
+   sr:[[`Чачак`, [`**Месна заједница Мрчајевци**, бирачко место 68: Коверте нису биле правилно запечаћене. Гласање је обустављено и чека се реакција РИК-а.`, `**Прехрамбено-угоститељска школа**, бирачко место 15: Спречено је разбијање гласачких кутија.`]],
+       [`Топола`, [`**Бирачко место 29:** Спречено је фотографисање бирачког списка.`]],
+       [`Крагујевац`, [`**Месна заједница Велико Поље**, бирачко место 63: Спречено је фотографисање гласачког листића.`, `**Месна заједница Десимировац**, бирачко место 129: Вођена су два паралелна бирачка списка, која су одузета.`]]],
+   en:[[`Čačak`, [`**Mrčajevci local community**, polling station 68: The envelopes had not been properly sealed. Voting was suspended pending a response from the Republic Electoral Commission (RIK).`, `**Food and Hospitality School**, polling station 15: An attempt to smash the ballot boxes was prevented.`]],
+       [`Topola`, [`**Polling station 29:** An attempt to photograph the electoral register was prevented.`]],
+       [`Kragujevac`, [`**Veliko Polje local community**, polling station 63: An attempt to photograph a ballot paper was prevented.`, `**Desimirovac local community**, polling station 129: Two parallel electoral registers were being kept; both were confiscated.`]]]},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[17,18],
+   sr:[[`Куцура`, [`**Бирачка места 28 и 30:** Одузети су паралелни бирачки спискови.`]],
+       [`Вршац`, [`У аутомобилу кандидата СНС-а Ивана Грујина, пронађен је паралелни бирачки списак. На терен су изашли јавна тужитељка и форензичка екипа. Биће поднета кривична пријава.`]]],
+   en:[[`Kucura`, [`**Polling stations 28 and 30:** Parallel electoral registers were confiscated.`]],
+       [`Vršac`, [`A parallel electoral register was found in the car of SNS candidate Ivan Grujin. The public prosecutor and a forensic team went to the scene. A criminal complaint will be filed.`]]]},
+  {k:`msg`,
+   sr:{h:`Излазност до 16 часова`, big:`55,7%`, p:[`Према нашем репрезентативном узорку.`]},
+   en:{h:`Turnout by 16:00`, big:`55.7%`, p:[`According to our representative sample.`]}},
+  {k:`irr`, reg:`bg`, st:`r`, t:[16,17],
+   sr:[[`Нови Београд`, [`**Блок 70, у околини ОШ „20. октобар“, бирачко место 77:** Позвана је полиција након физичког напада на грађанина који је гласао ван бирачког места. Инцидент је прошао без озбиљнијих повреда.`]],
+       [`Раковица`, [`**Бирачко место 26, ОШ „Никола Тесла“:** Бирачко место је затворено због фотографисања гласачког листића.`]]],
+   en:[[`New Belgrade`, [`**Block 70, near the 20 October Primary School, polling station 77:** The police were called after a physical attack on a citizen who had voted outside the polling station (mobile voting). No one was seriously injured.`]],
+       [`Rakovica`, [`**Polling station 26, Nikola Tesla Primary School:** The polling station was closed because of the photographing of a ballot paper.`]]]},
+  {k:`irr`, reg:`zapad`, st:`ok`, t:[16,17],
+   sr:[[`Лајковац`, [`**Бирачко место 23:** Спречен је „бугарски воз“.`]],
+       [`Дом културе`, [`**Бирачко место 56:** Спречено је фотографисање гласачког листића.`]]],
+   en:[[`Lajkovac`, [`**Polling station 23:** Carousel voting was prevented.`]],
+       [`Cultural Centre`, [`**Polling station 56:** An attempt to photograph a ballot paper was prevented.`]]]},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[16,17],
+   sr:[[`Пожаревац`, [`**Брежане, бирачко место 6:** Пронађени су и одузети паралелни бирачки спискови.`]]],
+   en:[[`Požarevac`, [`**Brežane, polling station 6:** Parallel electoral registers were found and confiscated.`]]]},
+  {k:`irr`, reg:`kg`, st:`ok`, t:[16,17],
+   sr:[[`Трстеник`, [`**Бирачко место 55:** Спречен је покушај дуплог гласања.`]],
+       [`Крагујевац`, [`**Месна заједница Десимировац, бирачко место 129:** Заустављено је фотографисање гласачког листића.`]]],
+   en:[[`Trstenik`, [`**Polling station 55:** An attempt at multiple voting was prevented.`]],
+       [`Kragujevac`, [`**Desimirovac local community, polling station 129:** The photographing of a ballot paper was stopped.`]]]},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[16,17],
+   sr:[[`Кула`, [`**Средња техничка школа:** Особа је приведена након што је ухваћена приликом фотографисања гласачког листића.`]],
+       [`Ново Милошево`, [`**Бирачко место 24:** Одузет је паралелни бирачки списак.`]],
+       [`Вршац`, [`**Марковац:** Одузет је паралелни бирачки списак.`]]],
+   en:[[`Kula`, [`**Technical Secondary School:** A person was taken in for questioning after being caught photographing a ballot paper.`]],
+       [`Novo Miloševo`, [`**Polling station 24:** A parallel electoral register was confiscated.`]],
+       [`Vršac`, [`**Markovac:** A parallel electoral register was confiscated.`]]]},
+  {k:`irr`, reg:`jug`, st:`r`,
+   sr:[[`Лесковац`, [`**Бирачко место 15:** Поломљена је гласачка кутија и гласање је прекинуто. Контролор Студентске листе задобио је повреде од стране члана СПС-а. Напад је пријављен и на терен су изашле екипе Хитне помоћи и полицијских службеника.`]],
+       [`Бела Паланка`, [`**Бирачко место 32:** Вођена је евиденција о томе ко је гласао.`, `**Бирачко место 20:** Пријављено је спречавање наших чланова бирачког одбора да обављају свој посао.`, `**Бирачко место 10:** Пријављен је покушај гласања са неважећом личном картом.`, `**Бирачко место 20:** Пријављен је покушај накнадног уписивања бирача на списак за гласање ван бирачког места, након 11 часова.`, `**Бирачко место 12:** Пријављено је вођење паралелног списка за исплату новца бирачима од стране члана бирачког одбора испред СНС-а.`], `Накнадно достављене пријаве за јутарње часове. Све ситуације су решене.`]],
+   en:[[`Leskovac`, [`**Polling station 15:** A ballot box was broken and voting was suspended. A Student List election monitor was injured by a member of the Socialist Party of Serbia (SPS). The attack was reported, and ambulance crews and police officers went to the scene.`]],
+       [`Bela Palanka`, [`**Polling station 32:** A record was kept of who had voted.`, `**Polling station 20:** Our electoral committee members were reportedly prevented from doing their work.`, `**Polling station 10:** An attempt to vote with an invalid identity card was reported.`, `**Polling station 20:** An attempt to add voters to the register for voting outside the polling station (mobile voting) after 11:00 was reported, while the official deadline for this action is 11:00.`, `**Polling station 12:** A member of the electoral committee representing the SNS was reportedly keeping a parallel list for paying money to voters.`], `Reports from the morning, submitted later. All situations have been resolved.`]]},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[15,16],
+   sr:[[`Бор`, [`**Бирачко место 46:** Бирачки одбор је водио паралелни бирачки списак на бирачком месту. Ситуација је решена.`]]],
+   en:[[`Bor`, [`**Polling station 46:** The electoral committee was keeping a parallel electoral register at the polling station. The situation was resolved.`]]]},
+  {k:`irr`, reg:`jug`, st:`r`, t:[15,16],
+   sr:[[`Врање`, [`У аутомобилима су уочени бирачки спискови испред више бирачких места.`]]],
+   en:[[`Vranje`, [`Electoral registers were spotted in cars parked outside several polling stations.`]]]},
+  {k:`irr`, reg:`kg`, st:`r`, t:[15,16],
+   sr:[[`Крагујевац`, [`**Месна заједница**, бирачко место 29: Спречено је фотографисање гласачког листића.`]],
+       [`Чачак`, [`**Месна заједница Јездина**, бирачка места 97 и 98: Пронађен је дупли бирачки списак, као и лажни бирачки списак за гласање ван бирачког места. Полиција је интервенисала и обе ситуације су регулисане.`]],
+       [`Александровац`, [`**Бирачка места 32, 48 и 59:** Спречено је фотографисање гласачких листића.`]],
+       [`Рача`, [`Двојица чланова СНС-а приведени су након куповине гласова.`]]],
+   en:[[`Kragujevac`, [`**Local community**, polling station 29: An attempt to photograph a ballot paper was prevented.`]],
+       [`Čačak`, [`**Jezdina local community**, polling stations 97 and 98: A duplicate electoral register was found, along with a fake register for voting outside the polling station (mobile voting). The police intervened, and both situations were resolved.`]],
+       [`Aleksandrovac`, [`**Polling stations 32, 48 and 59:** Attempts to photograph ballot papers were prevented.`]],
+       [`Rača`, [`Two SNS members were taken in for questioning over vote buying.`]]]},
+  {k:`irr`, reg:`bg`, st:`r`,
+   sr:[[`Гроцка`, [`**Бирачко место 48:** Спречено је фотографисање гласачког листића уз личну карту.`]],
+       [`Сопот`, [`**Бирачко место 18:** Спречено је фотографисање гласачког листића. Позвана је полиција.`]],
+       [`Панчево`, [`Сумњива особа из комбија са вршачким таблицама легитимисана је од стране полиције.`]],
+       [`Барајево`, [`**Бирачко место 28:** Спречено је фотографисање гласачког листића. Очекује се долазак полиције.`]]],
+   en:[[`Grocka`, [`**Polling station 48:** An attempt to photograph a ballot paper together with an identity card was prevented.`]],
+       [`Sopot`, [`**Polling station 18:** An attempt to photograph a ballot paper was prevented. The police were called.`]],
+       [`Pančevo`, [`The police checked the identity of a suspicious person from a van with Vršac number plates.`]],
+       [`Barajevo`, [`**Polling station 28:** An attempt to photograph a ballot paper was prevented. The police are expected to arrive.`]]]},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[15,16],
+   sr:[[`Бирачко место 36`, [`Пронађени паралелни бирачки списак је регулисан.`]],
+       [`Ново Милошево`, [`**Бирачко место 24:** Паралелни бирачки списак је одузет, а полиција је изашла на терен одмах по позиву.`]]],
+   en:[[`Polling station 36`, [`The parallel electoral register that was found has been dealt with.`]],
+       [`Novo Miloševo`, [`**Polling station 24:** A parallel electoral register was confiscated, and the police arrived at the scene immediately upon being called.`]]]},
+  {k:`msg`,
+   sr:{h:`Мирно до краја`, p:[`Ово су сати у којима видимо шта је остало од СНС-овог покушаја да покаже моћ.`, `Насиље, претње, застрашивање и покушаји да изазову сукобе. Толико од њихове силе.`]},
+   en:{h:`Peaceful until the end`, p:[`These are the hours in which we see what remains of SNS's attempt to project power.`, `Violence, threats, intimidation and attempts to provoke clashes. So much for their force.`]}},
+  {k:`irr`, reg:`zapad`, st:`r`, t:[14,15],
+   sr:[[`Љубовија`, [`**Бирачко место 4:** Пријављено је фотографисање гласачког листића. Полиција је одвела особу.`]],
+       [`Горњи Милановац`, [`**Бирачко место 42:** Контролор је водио паралелну евиденцију. Позвана је полиција.`]]],
+   en:[[`Ljubovija`, [`**Polling station 4:** The photographing of a ballot paper was reported. The police took the person away.`]],
+       [`Gornji Milanovac`, [`**Polling station 42:** An election monitor was keeping a parallel record. The police were called.`]]]},
+  {k:`irr`, reg:`kg`, st:`ok`, t:[14,15],
+   sr:[[`Јагодина`, [`**Кончарево, бирачка места 20, 21 и 22:** Председник бирачког одбора пронашао је возило са паралелним бирачким списковима и позвао полицију. Полиција је преузела случај и одузела дупли бирачки списак.`]],
+       [`Аранђеловац`, [`**Бирачко место 5**, вртић „Сунце“: Одузети су дупли бирачки спискови.`]],
+       [`Крушевац`, [`**Бирачка места 20 и 22:** Полиција је интервенисала након проналаска паралелних бирачких спискова.`]],
+       [`Чачак`, [`**Бирачко место 20**, Дом ученика: Гласање ван бирачког места заустављено је јер се списак који је доставила ГИК разликовао од списка који се налазио на бирачком месту.`]],
+       [`Ћићевац`, [`**Бирачка места 14 и 15:** Особе су спречене у вођењу паралелних бирачких спискова. Полиција је узела изјаве.`]]],
+   en:[[`Jagodina`, [`**Končarevo, polling stations 20, 21 and 22:** The president of the electoral committee found a vehicle containing parallel electoral registers and called the police. The police took over the case and confiscated the duplicate register.`]],
+       [`Aranđelovac`, [`**Polling station 5**, Sunce nursery: Duplicate electoral registers were confiscated.`]],
+       [`Kruševac`, [`**Polling stations 20 and 22:** The police intervened after parallel electoral registers were found.`]],
+       [`Čačak`, [`**Polling station 20**, student residence: Voting outside the polling station (mobile voting) was stopped because the list provided by the City Electoral Commission (GIK) differed from the list at the polling station.`]],
+       [`Ćićevac`, [`**Polling stations 14 and 15:** People were prevented from keeping parallel electoral registers. The police took statements.`]]]},
+  {k:`irr`, reg:`bg`, st:`r`,
+   sr:[[`Гроцка`, [`**Бирачко место 25:** Пријављено је фотографисање гласачког листића и позвана је полиција. Наши контролори били су затворени у просторији, док посматрачима није био дозвољен приступ. Након 30 минута, бирачко место је наставило са радом.`]]],
+   en:[[`Grocka`, [`**Polling station 25:** Photographing of a ballot paper was reported, and the police were called. Our election monitors were locked in a room, while election observers were denied access. After 30 minutes, the polling station resumed operations.`]]]},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[13,14],
+   sr:[[`Нови Сад`, [`Спречен је покушај малверзације која се тиче куповине гласачког листића.`]],
+       [`Нови Сад – Телеп`, [`Спречено вођење дуплих бирачких спискова испред бирачких места 39, 40 и 41.`]]],
+   en:[[`Novi Sad`, [`An attempt at electoral manipulation involving the purchase of a ballot paper was prevented.`]],
+       [`Novi Sad – Telep`, [`The keeping of parallel electoral registers outside polling stations 39, 40 and 41 was prevented.`]]]},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[14,15],
+   sr:[[`Деспотовац`, [`**Ресавица, бирачко место 35:** Члан нашег тима затекао је члана бирачког одбора како води дупли бирачки списак. Случај је потврдио мобилни тим.`]]],
+   en:[[`Despotovac`, [`**Resavica, polling station 35:** A member of our team caught a member of the electoral committee keeping a duplicate electoral register. The case was confirmed by the mobile team.`]]]},
+  {k:`irr`, reg:`jug`, st:`ok`,
+   sr:[[`Босилеград`, [`**Бирачко место 2:** Поништен је глас због фотографисања гласачког листића.`, `**Бирачко место 2:** Спречен је покушај јавног гласања.`]],
+       [`Пирот`, [`**Бирачко место 60:** Пријављено је фотографисање гласачког листића. Поднета је пријава полицији.`, `**Бирачко место 62:** Пријављена је куповина гласова. Поднета је пријава полицији и адвокату.`]],
+       [`Бела Паланка`, [`Уочен је дупли бирачки списак. Неправилност је ометена и спречена.`]]],
+   en:[[`Bosilegrad`, [`**Polling station 2:** A ballot was invalidated because it was photographed.`, `**Polling station 2:** An attempt to vote publicly was prevented.`]],
+       [`Pirot`, [`**Polling station 60:** Photographing of a ballot paper was reported. A report was filed with the police.`, `**Polling station 62:** Vote buying was reported. A report was filed with the police and a lawyer.`]],
+       [`Bela Palanka`, [`A duplicate electoral register was spotted. The irregularity was disrupted and prevented.`]]]},
+  {k:`msg`, at:`14:47`,
+   sr:{h:`Писмо народу`, p:[`Хвала вам на стрпљењу које сте нам до сад показали.`, `[Прочитајте писмо!](https://studenti.org.rs/vesti/izbori_pismo)`]},
+   en:{h:`A letter to the nation`, p:[`Thank you for the patience you have shown us so far.`, `[Read the letter!](https://studenti.org.rs/vesti/izbori_pismo)`]}},
+  {k:`msg`,
+   sr:{h:`Србија је већ сатима будна!`,
+       p:[`Зато, добар дан, Србијо! Добро јутро, добар дан и добро вече, дијаспоро!`,
+          `Од седам сати јутрос број људи на бирачким местима не опада. Грађани и даље стрпљиво и мирно чекају у редовима, како у Србији тако и у дијаспори. Сада је прави тренутак да гласате и ви који то до сада нисте учинили.`,
+          `Бирачи у дијаспори данас прелазе хиљаде километара како би остварили своје право гласа. Поздраве шаљемо свим нашим грађанима који су нам се јавили након што су прешли пола света како би се и њихов глас чуо. Неки су устали усред ноћи, неки су гласали у пиџамама, а неки нису ни спавали. Прво коло данашњег дана заиграно је у Торонту, у пола два ујутру. Велики поздрав свима!`,
+          `**Излазност до 14 часова износи 46,3 одсто**, према нашем репрезентативном узорку. Према подацима РИК-а, на претходним изборима до 14 часова излазност је износила 32,38 одсто.`,
+          `До 14 часова гласало је **три милиона људи!**`,
+          `Учинимо ове бројеве још већим. Направимо још већу разлику, стрпљиво и одговорно.`,
+          `У односу на претходни пресек, последња два сата обележила је додатна ескалација насиља над грађанима. Пријављене су ситуације у Панчеву, на Палилули, Старом граду, Звездари, у Дољевцу и Новом Саду. Наши тимови су о свим наведеним ситуацијама обавестили полицију и очекујемо да оне буду што пре разрешене.`,
+          `Подсећамо још једном: сваки облик насиља и притиска на бираче је недопустив. Очекујемо да сви који су одговорни за такве поступке сносе последице у складу са законом.`,
+          `Наши вредни људи од раних јутарњих часова чувају гласове и бирачка места, а сви ми чувамо њих.`,
+          `**Остало је још само шест сати до затварања бирачких места.** Позивамо све да буду стрпљиви, сачекају свој ред, чак и у случају привремених прекида гласања, и остваре своје право гласа. Чекали смо овај дан две године, можемо још пар сати.`]},
+   en:{h:`Serbia has been awake for hours!`,
+       p:[`So, good afternoon, Serbia! Good morning, good afternoon and good evening, diaspora!`,
+          `Since 7:00 this morning the number of people at polling stations has not decreased. Citizens continue to wait patiently and peacefully in queues, both in Serbia and across the diaspora. If you haven't voted yet, now is the perfect time.`,
+          `Voters in the diaspora are travelling thousands of kilometres today to exercise their right to vote. We send our greetings to all our fellow citizens who reached out to us after travelling halfway around the world to make sure their voices are heard too. Some of them woke up in the middle of the night, some voted in their pyjamas, and others didn't sleep at all. The first kolo of the day was danced in Toronto at 01:30. A big shout-out to everyone!`,
+          `**Turnout by 14:00 is 46.3%**, according to our representative sample. According to Republic Electoral Commission (RIK) data, turnout by 14:00 in the previous elections was 32.38%.`,
+          `By 14:00, **three million people** had voted!`,
+          `Let's make these numbers even higher. Let's make an even greater difference, patiently and responsibly.`,
+          `Compared with the previous update, the last two hours have been marked by a further escalation of violence against citizens. Incidents were reported in Pančevo, Palilula, Stari Grad, Zvezdara, Doljevac and Novi Sad. Our teams have notified the police about all of them, and we expect them to be resolved as soon as possible.`,
+          `We remind you once again: any form of violence and pressure on voters is unacceptable. We expect everyone responsible for such actions to face the consequences in accordance with the law.`,
+          `Our hardworking people have been safeguarding the votes and polling stations since the early morning hours, and all of us are safeguarding them.`,
+          `**There are only six hours left until the polling stations close.** We call on everyone to be patient, wait their turn, even if voting is temporarily suspended, and exercise their right to vote. We have waited for this day for two years; we can manage a few more hours.`]}},
+  {k:`irr`, reg:`kg`, st:`ok`, t:[13,14],
+   sr:[[`Љиг`, [`**Бирачко место 25:** Спречен је покушај непознате особе да одузме акредитацију контролору.`]],
+       [`Крагујевац`, [`**МЗ Велико Поље, бирачко место 63:** Спречена су два покушаја фотографисања гласачких листића.`]],
+       [`Чачак`, [`**Трбушани**, истурено одељење ОШ „Танаско Рајић“, бирачко место 44: Полиција је дошла након што су контролори пријављени за ометање рада, јер нису дозвољавали фотографисање гласачких листића.`]],
+       [`Краљево`, [`**Бирачка места 1 и 2:** Пронађени су паралелни бирачки спискови. Случај је решен.`]]],
+   en:[[`Ljig`, [`**Polling station 25:** An attempt by an unknown person to take an election monitor's accreditation away was prevented.`]],
+       [`Kragujevac`, [`**Veliko Polje local community, polling station 63:** Two attempts to photograph ballot papers were prevented.`]],
+       [`Čačak`, [`**Trbušani**, branch of Tanasko Rajić Primary School, polling station 44: The police arrived after our election monitors were reported for obstructing the work of the polling station because they would not allow ballot papers to be photographed.`]],
+       [`Kraljevo`, [`**Polling stations 1 and 2:** Parallel electoral registers were found. The case was resolved.`]]]},
+  {k:`irr`, reg:`istok`, st:`ok`, t:[13,14],
+   sr:[[`Зајечар`, [`**Бирачко место 13:** Кваке на улазним вратима бирачког места биле су попрскане спрејом, због чега бирачи нису могли да уђу. Ситуација је решена и бирачима је омогућен улазак.`]],
+       [`Параћин`, [`**Хала спортова**, бирачко место 5: Пронађен је и одузет дупли бирачки списак.`]]],
+   en:[[`Zaječar`, [`**Polling station 13:** The door handles at the polling station entrance had been sprayed, preventing voters from entering. The situation was resolved, and voters were able to enter.`]],
+       [`Paraćin`, [`**Sports hall**, polling station 5: A duplicate electoral register was found and confiscated.`]]]},
+  {k:`irr`, reg:`sever`, st:`ok`, t:[null,14],
+   sr:[[`Нови Сад`, [`Одузет је дупли бирачки списак.`]]],
+   en:[[`Novi Sad`, [`A duplicate electoral register was confiscated.`]]]},
+  {k:`irr`, reg:`bg`, st:`r`, t:[13,14],
+   sr:[[`Обреновац`, [`**Бирачка места 13 и 34:** Спречено је фотографисање гласачких листића.`]],
+       [`Гроцка`, [`**Бирачко место 43:** Спречено је фотографисање гласачког листића.`, `**Бирачко место 25:** Пријављено је фотографисање гласачког листића. Гласање је заустављено.`]]],
+   en:[[`Obrenovac`, [`**Polling stations 13 and 34:** Attempts to photograph ballot papers were prevented.`]],
+       [`Grocka`, [`**Polling station 43:** An attempt to photograph a ballot paper was prevented.`, `**Polling station 25:** Photographing of a ballot paper was reported. Voting was stopped.`]]]},
+  {k:`irr`, reg:`zapad`, st:`r`, t:[13,14],
+   sr:[[`Лајковац`, [`Пријављена су четири покушаја фотографисања гласачких листића. Сви случајеви су санкционисани.`]],
+       [`Горњи Милановац`, [`**Бирачка места 64 и 65:** На паркингу испред бирачког места пронађен је дупли бирачки списак. Очекује се долазак полиције.`, `**Бирачко место 36:** Гласање је обустављено јер је радила само једна УВ лампа.`]],
+       [`Љубовија`, [`**Бирачко место 3:** Пријављено је фотографисање гласачког листића. Полиција је одвела особу, али је гласачки листић убачен у гласачку кутију.`]]],
+   en:[[`Lajkovac`, [`Four attempts to photograph ballot papers were reported. All cases were sanctioned.`]],
+       [`Gornji Milanovac`, [`**Polling stations 64 and 65:** A duplicate electoral register was found in the car park in front of the polling station. The police are expected to arrive.`, `**Polling station 36:** Voting was suspended because only one UV lamp was working.`]],
+       [`Ljubovija`, [`**Polling station 3:** Photographing of a ballot paper was reported. The police took the person away, but the ballot paper was put into the ballot box.`]]]},
+  {k:`irr`, reg:`jug`, st:`ok`, t:[13,14],
+   sr:[[`Врање`, [`**Бирачко место 29:** Пријављена је куповина гласова полицији.`]],
+       [`Прешево`, [`**Бирачко место 14:** Председник бирачког одбора одобрио је гласање особи већ обележеној UV спрејом. Наш контролор је вређан, а поднета је кривична пријава.`]]],
+   en:[[`Vranje`, [`**Polling station 29:** Vote buying was reported to the police.`]],
+       [`Preševo`, [`**Polling station 14:** The president of the electoral committee allowed a person already marked with UV spray to vote. Our election monitor was verbally abused, and a criminal complaint was filed.`]]]},
+  {k:`irr`, reg:`kg`, st:`r`, t:[11,12],
+   sr:[[`Чачак`, [`**Бирачко место 101:** Бирачко место је отворено након кашњења од 4 сата.`]],
+       [`Аранђеловац`, [`**Вукасовци, бирачко место 27:** Пронађен је још један паралелни бирачки списак. Такође, у једном аутомобилу су пронађене фасцикле и новац. Случај је решен.`]],
+       [`Крагујевац`, [`**Денино брдо, бирачко место 172:** Утврђено је да је спреј неисправан и да се ознака може уклонити ацетоном. Чланови ГИК-а зауставили су гласање док се ситуација не разреши.`]]],
+   en:[[`Čačak`, [`**Polling station 101:** The polling station opened after a four-hour delay.`]],
+       [`Aranđelovac`, [`**Vukasovci, polling station 27:** Another parallel electoral register was found. Folders and money were also found in a car. The case was resolved.`]],
+       [`Kragujevac`, [`**Denino Brdo, polling station 172:** The ink spray was found to be faulty, as the mark could be removed with acetone. Members of the City Electoral Commission (GIK) stopped voting until the situation was resolved.`]]]},
+];
+
+
+// ── Rendering ──
+const qs = new URLSearchParams(location.search);
+let lang = qs.get(`lang`) || store(`izbori.lang`) || `sr`;
+let filter = `all`; // all | msg | irr | region key
+const $ = s => document.querySelector(s);
+
+function store(k, v){
+  try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; }
+}
+function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function md(s){
+  return esc(s)
+    .replace(/\*\*(.+?)\*\*/g, `<strong>$1</strong>`)
+    .replace(/\[(.+?)\]\((https?:[^)\s]+)\)/g, `<a href="$2" target="_blank" rel="noopener">$1</a>`);
+}
+function hours(t){
+  if(!t) return ``;
+  const [a, b] = t;
+  if(a === null) return lang === `sr` ? `до ${b}:00` : `by ${b}:00`;
+  return `${a}:00–${b}:00`;
+}
+function matches(it){
+  if(filter === `all`) return true;
+  if(filter === `msg` || filter === `irr`) return it.k === filter;
+  return it.k === `irr` && it.reg === filter;
+}
+
+function renderFilters(){
+  const L = UI[lang];
+  const chip = (f, label) => `<button class="chip${filter === f ? ` on` : ``}" data-f="${f}">${label}</button>`;
+  $(`#flt`).innerHTML = chip(`all`, L.all) + chip(`msg`, L.msgs) + chip(`irr`, L.irr) +
+    Object.keys(REG).map(k => chip(k, REG[k][lang])).join(``);
+}
+
+function renderItem(it){
+  const L = UI[lang], c = it[lang];
+  if(it.k === `msg`){
+    return `<li class="item msg">
+      <time>${it.at || ``}</time>
+      <div>
+        <span class="chip msg">${L.msg}</span>
+        <h3>${md(c.h)}</h3>
+        ${c.big ? `<div class="big">${md(c.big)}</div>` : ``}
+        ${c.lead ? `<p class="faint">${md(c.lead)}</p>` : ``}
+        ${(c.p || []).map(p => `<p>${md(p)}</p>`).join(``)}
+        ${c.quote ? `<blockquote><p class="faint">${esc(c.quote.by)}:</p>${c.quote.p.map(p => `<p>${md(p)}</p>`).join(``)}</blockquote>` : ``}
+      </div>
+    </li>`;
+  }
+  const places = Array.isArray(c) ? c : [];
+  return `<li class="item ${it.st}">
+    <time>${hours(it.t)}</time>
+    <div>
+      <span class="chip ${it.st}">${L[it.st]}</span>
+      <h3>${REG[it.reg][lang]}</h3>
+      ${c.lead ? `<p class="faint">${md(c.lead)}</p>` : ``}
+      ${places.map(([name, items, note]) => `<div class="place">
+        <h4>${md(name)}</h4>
+        ${note ? `<p class="note">${md(note)}</p>` : ``}
+        <ul>${items.map(i => `<li>${md(i)}</li>`).join(``)}</ul>
+      </div>`).join(``)}
+    </div>
+  </li>`;
+}
+
+function renderFeed(){
+  const items = FEED.filter(matches);
+  $(`#feed`).innerHTML = items.length ? items.map(renderItem).join(``) : `<li class="empty">${UI[lang].none}</li>`;
+}
+
+function render(){
+  const L = UI[lang];
+  document.documentElement.lang = lang;
+  
+  $(`#date`).textContent = L.date;
+  document.querySelectorAll(`[data-t]`).forEach(el => el.textContent = L[el.dataset.t]);
+  document.querySelectorAll(`[data-lang]`).forEach(b => b.classList.toggle(`on`, b.dataset.lang === lang));
+  renderFilters(); renderFeed();
+}
+
+document.addEventListener(`click`, e => {
+  const l = e.target.closest(`[data-lang]`);
+  if(l){ lang = l.dataset.lang; store(`izbori.lang`, lang); render(); return; }
+  const f = e.target.closest(`[data-f]`);
+  if(f){ filter = f.dataset.f; renderFilters(); renderFeed(); }
+});
+render();
+</script>
