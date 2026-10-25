@@ -167,6 +167,9 @@ const REG = {
 
 // Feed, latest first. k: msg = statement, irr = irregularities (st: r reported, ok resolved; t: hour window).
 const FEED = [
+  {k:`msg`,
+   sr:{h:`Посао није готов`, p:[`Изборни процес и даље траје. Наши људи још увек броје гласове и у изборним су комисијама.`, `Молимо све грађане који се налазе на критичним тачкама да се повуку и да мирно и достојанствено сачувају победу.`, `**Грађани Београда, дођите на Булевар Милутина Миланковића да заједно прославимо.**`]},
+   en:{h:`The job is not done`, p:[`The electoral process is still under way. Our people are still counting the votes and are still on the electoral commissions.`, `We ask all citizens who are at critical locations to withdraw and to protect the victory calmly and with dignity.`, `**Citizens of Belgrade, come to Bulevar Milutina Milankovića so we can celebrate together.**`]}},
   {k:`irr`, reg:`jug`, st:`r`, t:[19,20],
    sr:[[`Сврљиг, Чаир, БМ 42 и 43`, [`У близини бирачких места примећена су два комбија. Према информацијама са терена, постоји сумња да се у њима налазе особе наоружане палицама. Полиција је обавештена.`]]],
    en:[[`Svrljig, Čair, polling stations 42 and 43`, [`Two vans were spotted near the polling stations. According to reports from the field, the people inside are suspected of being armed with clubs. The police have been informed.`]]]},
